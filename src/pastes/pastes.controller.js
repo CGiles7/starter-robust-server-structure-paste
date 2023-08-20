@@ -81,6 +81,14 @@ function create(req, res) {
   res.status(201).json({ data: newPaste });
 }
 
+function destroy(req, res) {
+    const { pasteId } = req.params;
+    const index = pastes.findIndex((paste) => paste.id === Number(pasteId));
+    // `splice()` returns an array of the deleted elements, even if it is one element
+    const deletedPastes = pastes.splice(index, 1);
+    res.sendStatus(204);
+  }
+
 module.exports = {
     create: [
         bodyDataHas("name"),
@@ -108,4 +116,5 @@ module.exports = {
         expirationIsValidNumber,
         update
     ],
+    delete: [pasteExists, destroy],
   };
